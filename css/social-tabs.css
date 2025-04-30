@@ -1,0 +1,414 @@
+/* Social Media Platform Tabs Styles */
+
+/* Social Tab Navigation */
+.social-platform-tabs {
+    margin-top: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.social-tab-navigation {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: var(--bg-light);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.social-tab-btn {
+    padding: 10px 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.social-tab-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--primary-color);
+}
+
+.social-tab-btn.active {
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--primary-color);
+    background-color: var(--bg-color);
+}
+
+/* Platform-specific styling for tab buttons */
+.social-tab-btn[data-platform="facebook"] {
+    border-left: 3px solid #1877F2;
+}
+
+.social-tab-btn[data-platform="twitter"] {
+    border-left: 3px solid #1DA1F2;
+}
+
+.social-tab-btn[data-platform="instagram"] {
+    border-left: 3px solid #E4405F;
+}
+
+.social-tab-btn[data-platform="linkedin"] {
+    border-left: 3px solid #0A66C2;
+}
+
+.social-tab-btn[data-platform="telegram"] {
+    border-left: 3px solid #0088cc;
+}
+
+.social-tab-btn[data-platform="whatsapp"] {
+    border-left: 3px solid #25D366;
+}
+
+/* Social Tab Content */
+.social-tab-content {
+    display: none;
+    padding: 20px;
+    background-color: var(--bg-color);
+}
+
+.social-tab-content.active {
+    display: block;
+}
+
+/* Platform Header */
+.platform-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.platform-icon {
+    font-size: 24px;
+    margin-right: 10px;
+    color: var(--primary-color);
+}
+
+/* Platform Connection Status */
+.platform-connection-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 15px;
+    background-color: var(--bg-light);
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.connection-info p {
+    margin: 5px 0;
+}
+
+.status-value {
+    font-weight: bold;
+}
+
+.status-connected {
+    color: var(--success-color);
+}
+
+.status-disconnected {
+    color: var(--danger-color);
+}
+
+.connection-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.platform-action-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.connect-btn {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.connect-btn:hover {
+    background-color: #218838;
+}
+
+.disconnect-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.disconnect-btn:hover {
+    background-color: #c82333;
+}
+
+/* Platform Settings */
+.platform-settings {
+    background-color: var(--bg-light);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.platform-settings h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.save-platform-settings {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.save-platform-settings:hover {
+    background-color: #cc0000;
+}
+
+/* Platform Analytics */
+.platform-analytics {
+    background-color: var(--bg-light);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.analytics-metrics {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.metric-card {
+    flex: 1;
+    background-color: var(--bg-color);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.metric-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+.metric-label {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* Platform-specific colors - now applied to the buttons themselves */
+.social-tab-btn[data-platform="facebook"].active {
+    color: #1877F2;
+}
+
+.social-tab-btn[data-platform="twitter"].active {
+    color: #1DA1F2;
+}
+
+.social-tab-btn[data-platform="instagram"].active {
+    color: #E4405F;
+}
+
+.social-tab-btn[data-platform="linkedin"].active {
+    color: #0A66C2;
+}
+
+.social-tab-btn[data-platform="telegram"].active {
+    color: #0088cc;
+}
+
+.social-tab-btn[data-platform="whatsapp"].active {
+    color: #25D366;
+}
+
+/* Social Connect Buttons */
+.social-connect-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    margin: 5px;
+    background-color: var(--primary-color);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.social-connect-btn:hover {
+    background-color: #cc0000;
+    transform: translateY(-2px);
+}
+
+.social-connect-btn.connected {
+    background-color: var(--success-color);
+}
+
+.social-connect-btn.connected:hover {
+    background-color: #218838;
+}
+
+/* Direct Share Buttons */
+.social-sharing-section {
+    background-color: var(--bg-light);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.video-input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.video-input-group input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.direct-share-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.direct-share-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.direct-share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.direct-share-btn.facebook {
+    background-color: #1877F2;
+}
+
+.direct-share-btn.twitter {
+    background-color: #1DA1F2;
+}
+
+.direct-share-btn.linkedin {
+    background-color: #0A66C2;
+}
+
+.direct-share-btn.whatsapp {
+    background-color: #25D366;
+}
+
+.direct-share-btn.telegram {
+    background-color: #0088cc;
+}
+
+.share-instructions {
+    background-color: var(--bg-color);
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.share-instructions h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.share-instructions ol {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.api-setup-instructions {
+    background-color: var(--bg-color);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 4px solid var(--warning-color);
+}
+
+.api-setup-instructions h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: var(--warning-color);
+}
+
+.api-setup-instructions ol {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.setup-guide-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.setup-guide-link:hover {
+    text-decoration: underline;
+    color: #cc0000;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .social-tab-navigation {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+    
+    .platform-connection-status {
+        flex-direction: column;
+    }
+    
+    .connection-actions {
+        margin-top: 15px;
+        width: 100%;
+    }
+    
+    .analytics-metrics {
+        flex-direction: column;
+    }
+    
+    .direct-share-buttons {
+        flex-direction: column;
+    }
+    
+    .direct-share-btn {
+        width: 100%;
+    }
+}

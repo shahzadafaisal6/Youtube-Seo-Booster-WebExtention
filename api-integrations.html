@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Integrations - YouTube SEO Booster</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="api-integrations-container">
+        <h1>API Integrations</h1>
+        
+        <!-- YouTube Data API Section -->
+        <div class="api-section">
+            <h2>YouTube Data API</h2>
+            <div class="api-info-box">
+                <p>Required for accessing YouTube video data, analytics, and channel information.</p>
+            </div>
+            <div class="api-configuration">
+                <input type="text" id="youtubeApiKey" placeholder="Enter YouTube API Key">
+                <div class="api-actions">
+                    <button id="saveYoutubeApi" class="btn-primary">Save</button>
+                    <button id="testYoutubeApi" class="btn-secondary">Test Connection</button>
+                </div>
+                <div class="api-status" id="youtubeApiStatus">
+                    <span class="status-indicator"></span>
+                    <span class="status-text">Not Configured</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics API Section -->
+        <div class="api-section">
+            <h2>Analytics APIs</h2>
+            <div class="api-info-box">
+                <p>Required for advanced analytics, audience insights, and performance tracking.</p>
+            </div>
+            <div class="analytics-api-tabs">
+                <button class="analytics-tab-btn active" data-analytics="google">Google Analytics</button>
+                <button class="analytics-tab-btn" data-analytics="custom">Custom Analytics</button>
+            </div>
+            <div class="analytics-api-content active" id="google-analytics-content">
+                <h4>Google Analytics API</h4>
+                <input type="text" id="googleAnalyticsId" placeholder="Google Analytics Measurement ID">
+                <button id="saveGoogleAnalytics" class="btn-primary">Save Google Analytics</button>
+            </div>
+        </div>
+
+        <!-- Keyword Research API Section -->
+        <div class="api-section">
+            <h2>Keyword Research APIs</h2>
+            <div class="api-info-box">
+                <p>Required for real keyword data, search volumes, and trend analysis.</p>
+            </div>
+            <div class="api-provider-select">
+                <label for="keywordApiProvider">Select Provider:</label>
+                <select id="keywordApiProvider">
+                    <option value="semrush">SEMrush</option>
+                    <option value="ahrefs">Ahrefs</option>
+                    <option value="keywordtool">KeywordTool.io</option>
+                    <option value="keywordplanner">Google Keyword Planner</option>
+                    <option value="rapidapi">RapidAPI Keywords</option>
+                </select>
+            </div>
+            <div class="api-key-input">
+                <input type="text" id="keywordApiKey" placeholder="Enter your Keyword API Key">
+                <div class="api-actions">
+                    <button id="saveKeywordApiKey" class="btn-primary">Save API Key</button>
+                    <button id="testKeywordApiKey" class="btn-secondary">Test API Key</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- OpenAI API Section -->
+        <div class="api-section">
+            <h2>OpenAI API</h2>
+            <div class="api-info-box">
+                <p>Required for AI-powered content suggestions and optimizations.</p>
+            </div>
+            <div class="api-configuration">
+                <input type="text" id="openaiApiKey" placeholder="Enter OpenAI API Key">
+                <div class="api-actions">
+                    <button id="saveOpenaiApi" class="btn-primary">Save</button>
+                    <button id="testOpenaiApi" class="btn-secondary">Test Connection</button>
+                </div>
+                <div class="api-status" id="openaiApiStatus">
+                    <span class="status-indicator"></span>
+                    <span class="status-text">Not Configured</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Media APIs Section -->
+        <div class="api-section">
+            <h2>Social Media APIs</h2>
+            <div class="api-info-box">
+                <p>Required for direct social media sharing and analytics.</p>
+            </div>
+            <div class="social-api-tabs">
+                <button class="social-tab-btn active" data-social="facebook">Facebook</button>
+                <button class="social-tab-btn" data-social="twitter">Twitter</button>
+                <button class="social-tab-btn" data-social="instagram">Instagram</button>
+                <button class="social-tab-btn" data-social="linkedin">LinkedIn</button>
+            </div>
+            <div class="social-api-content active" id="facebook-content">
+                <h4>Facebook API</h4>
+                <input type="text" id="facebookAppId" placeholder="Facebook App ID">
+                <input type="text" id="facebookAppSecret" placeholder="Facebook App Secret">
+                <button id="saveFacebookApi" class="btn-primary">Save Facebook API</button>
+            </div>
+            <div class="social-api-content" id="twitter-content">
+                <h4>Twitter API</h4>
+                <input type="text" id="twitterApiKey" placeholder="Twitter API Key">
+                <input type="text" id="twitterApiSecret" placeholder="Twitter API Secret">
+                <input type="text" id="twitterAccessToken" placeholder="Twitter Access Token">
+                <input type="text" id="twitterAccessSecret" placeholder="Twitter Access Secret">
+                <button id="saveTwitterApi" class="btn-primary">Save Twitter API</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api-integrations.js"></script>
+</body>
+</html> 

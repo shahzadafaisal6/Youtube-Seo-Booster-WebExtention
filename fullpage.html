@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/social-tabs.css">
+    <link rel="stylesheet" href="css/fullpage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="chart.js"></script>
+    <script src="js/main.js" type="module"></script>
+    <title>YouTube SEO Booster - Full Dashboard</title>
+    
+    <!-- Fullscreen specific styles -->
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .fullpage-body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        
+        .sidebar {
+            height: 100vh;
+            overflow-y: auto;
+            flex-shrink: 0;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 100;
+        }
+        
+        .main-content {
+            flex: 1;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+        
+        .fullpage-tab-content {
+            padding-bottom: 50px;
+            width: 100%;
+        }
+        
+        /* Fix for notification */
+        #notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        
+        /* Ensure tab panes take full height */
+        .tab-pane {
+            min-height: calc(100vh - 120px);
+            width: 100%;
+        }
+        
+        /* Mobile view */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+            }
+            
+            .sidebar-header h2,
+            .sidebar-btn span,
+            .sidebar-footer {
+                display: none;
+            }
+            
+            .sidebar-btn {
+                justify-content: center;
+                padding: 15px 0;
+            }
+            
+            .sidebar-btn i {
+                margin-right: 0;
+                font-size: 18px;
+            }
+            
+            .main-content {
+                margin-left: 60px;
+                width: calc(100% - 60px);
+            }
+        }
+    </style>
+</head>
+<body class="fullpage-body">
+    <div id="notification" class="notification" style="display: none;"></div>
+    
+    <!-- Modern sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <img src="icons/128/icon128.png" alt="YouTube SEO Booster" class="logo">
+            <h2>YouTube SEO Booster</h2>
+        </div>
+        
+        <div class="sidebar-menu">
+            <button class="sidebar-btn active" data-tab="analytics">
+                <i class="fas fa-chart-line"></i> Analytics
+            </button>
+            <button class="sidebar-btn" data-tab="keywords">
+                <i class="fas fa-key"></i> Keywords
+            </button>
+            <button class="sidebar-btn" data-tab="competitors">
+                <i class="fas fa-users"></i> Competitors
+            </button>
+            <button class="sidebar-btn" data-tab="content">
+                <i class="fas fa-file-alt"></i> Content
+            </button>
+            <button class="sidebar-btn" data-tab="thumbnails">
+                <i class="fas fa-image"></i> Thumbnails
+            </button>
+            <button class="sidebar-btn" data-tab="abtesting">
+                <i class="fas fa-flask"></i> A/B Testing
+            </button>
+            <button class="sidebar-btn" data-tab="social">
+                <i class="fas fa-share-alt"></i> Social Media
+            </button>
+            <button class="sidebar-btn" data-tab="tools">
+                <i class="fas fa-tools"></i> Tools
+            </button>
+            <button class="sidebar-btn" data-tab="api">
+                <i class="fas fa-plug"></i> API Management
+            </button>
+            <button class="sidebar-btn" data-tab="settings">
+                <i class="fas fa-cog"></i> Settings
+            </button>
+        </div>
+        
+        <div class="sidebar-footer">
+            <div class="developer-info">
+                <p>Hmna-Tech</p>
+                <p>Developed by Faisal</p>
+                <p>
+                    <a href="https://wa.me/923013116258" target="_blank"><i class="fab fa-whatsapp"></i> +923013116258</a>
+                </p>
+                <p>
+                    <a href="https://wa.me/923367866994" target="_blank"><i class="fab fa-whatsapp"></i> +923367866994</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main content area -->
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="status-indicators">
+                <span id="apiStatus" class="status-badge"><i class="fas fa-plug"></i> API: Disconnected</span>
+                <span id="lastUpdated" class="status-badge"><i class="fas fa-clock"></i> Last updated: Never</span>
+            </div>
+            <div class="search-container">
+                <input type="text" id="globalSearch" placeholder="Search across all data...">
+                <button id="searchBtn"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="header-actions">
+                <button id="themeToggle" class="btn-primary"><i class="fas fa-moon"></i> Theme</button>
+                <button id="settingsBtn" class="btn-primary"><i class="fas fa-cog"></i> Settings</button>
+                <button id="activityLogBtn" class="btn-primary"><i class="fas fa-history"></i> Activity Log</button>
+                <button id="clearLogs" class="btn-primary"><i class="fas fa-trash"></i> Clear Logs</button>
+            </div>
+        </div>
+        
+        <!-- Tab Content -->
+        <div class="tab-content fullpage-tab-content">
+            <!-- Analytics Tab -->
+            <div class="tab-pane active" id="analytics-tab">
+                <div class="video-analytics">
+                    <h2>Video Performance</h2>
+                    <div class="dashboard-header">
+                        <div class="video-input-container">
+                            <input type="text" id="videoId" placeholder="Enter YouTube Video ID or URL">
+                            <button id="fetchMetrics" class="btn btn-primary"><i class="fas fa-sync-alt"></i> Fetch Metrics</button>
+                            <button id="detectCurrentVideo" class="btn btn-secondary"><i class="fas fa-magic"></i> Detect Current Video</button>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>Video Preview</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="thumbnailPreview" class="thumbnail-container"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>Key Metrics</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="videoMetrics" class="metrics-grid"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card wide-card">
+                            <div class="card-header">
+                                <h3>Performance Chart</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="performanceChart" class="chart-container"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>Audience Retention</h3>
+                                <button id="fetchRetention" class="btn btn-secondary"><i class="fas fa-users"></i> Analyze Retention</button>
+                            </div>
+                            <div class="card-body">
+                                <div id="retentionChart" class="retention-container"></div>
+                                <div id="retentionInsights" class="insights-container"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>Monetization Estimate</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="monetizationStats" class="monetization-container"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card wide-card">
+                            <div class="card-header">
+                                <h3>Performance History</h3>
+                                <button id="saveSnapshot" class="btn btn-secondary"><i class="fas fa-save"></i> Save Snapshot</button>
+                            </div>
+                            <div class="card-body">
+                                <div id="performanceHistory" class="history-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Keywords Tab -->
+            <div class="tab-pane" id="keywords-tab">
+                <div class="keyword-section">
+                    <h2>Keyword Suggestions</h2>
+                    <input type="text" id="keywordInput" placeholder="Enter topic or phrase">
+                    <button id="fetchKeywords">Get Suggestions</button>
+                    <div class="keyword-list" id="keywordSuggestions"></div>
+                </div>
+                
+                <div class="advanced-keywords">
+                    <h2>Advanced Keyword Analysis</h2>
+                    <button id="analyzeKeywords" class="btn-primary">Analyze Keywords</button>
+                    <div id="keywordAnalysis"></div>
+                    <div id="keywordTrends"></div>
+                </div>
+                
+                <div class="trending-topics">
+                    <h2>Trending Topics</h2>
+                    <select id="categorySelect">
+                        <option value="">All Categories</option>
+                        <option value="1">Film & Animation</option>
+                        <option value="2">Autos & Vehicles</option>
+                        <option value="10">Music</option>
+                        <option value="15">Pets & Animals</option>
+                        <option value="17">Sports</option>
+                        <option value="20">Gaming</option>
+                        <option value="22">People & Blogs</option>
+                        <option value="23">Comedy</option>
+                        <option value="24">Entertainment</option>
+                        <option value="25">News & Politics</option>
+                        <option value="26">Howto & Style</option>
+                        <option value="27">Education</option>
+                        <option value="28">Science & Technology</option>
+                    </select>
+                    <button id="fetchTrending">Fetch Trending</button>
+                    <div id="trendingResults"></div>
+                </div>
+            </div>
+            
+            <div class="tab-pane" id="competitors-tab">
+                <div class="competitor-analysis">
+                    <h2>Competitor Analysis</h2>
+                    <input type="text" id="competitorKeyword" placeholder="Enter keyword to find competitors">
+                    <button id="findCompetitors">Find Competitors</button>
+                    <div id="competitorResults"></div>
+                    <div id="competitorInsights"></div>
+                </div>
+                
+                <div class="content-gaps">
+                    <h2>Content Gap Analysis</h2>
+                    <p>Identify content opportunities based on competitor analysis</p>
+                    <button id="analyzeContentGap" class="btn-primary">Analyze Content Gaps</button>
+                    <div id="contentGapResults"></div>
+                </div>
+            </div>
+            
+            <div class="tab-pane" id="content-tab">
+                <div class="metadata-section">
+                    <h2>Metadata Optimization</h2>
+                    <textarea id="videoTitle" placeholder="Video Title"></textarea>
+                    <textarea id="videoDescription" placeholder="Video Description"></textarea>
+                    <div id="metadataSuggestions"></div>
+                    <button id="applyMetadataSuggestions" class="btn-primary">Apply Suggestions</button>
+                </div>
+                
+                <div class="description-generator">
+                    <h2>AI Description Generator</h2>
+                    <button id="generateDescription" class="btn-primary">Generate Optimized Description</button>
+                    <div id="generatedDescriptions"></div>
+                </div>
+                
+                <div class="hashtag-generator">
+                    <h2>Hashtag Generator</h2>
+                    <p>Generate optimized hashtags for your YouTube video</p>
+                    <input type="text" id="hashtagKeywords" placeholder="Enter main topics separated by commas">
+                    <div class="hashtag-options">
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="trendingHashtags" checked>
+                            <label for="trendingHashtags">Include trending hashtags</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="nicheHashtags" checked>
+                            <label for="nicheHashtags">Include niche-specific hashtags</label>
+                        </div>
+                    </div>
+                    <button id="generateHashtags" class="btn-primary">Generate Hashtags</button>
+                    <div id="hashtagResults"></div>
+                </div>
+                
+                <div class="content-calendar">
+                    <h2>Content Calendar</h2>
+                    <button id="viewCalendar" class="btn-primary">View Calendar</button>
+                    <button id="addCalendarItem" class="btn-secondary">Add New Item</button>
+                    <div id="calendarItems"></div>
+                </div>
+            </div>
+            
+            <div class="tab-pane" id="thumbnails-tab">
+                <div class="tab-header">
+                    <h2>Thumbnail Tools</h2>
+                    <p>Create and analyze thumbnails to increase your click-through rate</p>
+                </div>
+                
+                <div class="thumbnail-analyzer">
+                    <h2>Thumbnail Analyzer</h2>
+                    <p>Upload your thumbnail to get optimization suggestions</p>
+                    <div class="thumbnail-upload">
+                        <input type="file" id="thumbnailFile" accept="image/*">
+                        <button id="analyzeThumbnail" class="btn-primary">Analyze Thumbnail</button>
+                    </div>
+                    <div id="thumbnailPreview" class="preview-container"></div>
+                    <div id="thumbnailAnalysis" class="analysis-results"></div>
+                </div>
+                
+                <!-- Advanced Thumbnail Generator -->
+                <div class="thumbnail-generator">
+                    <h2>AI Thumbnail Generator</h2>
+                    <p>Create professional thumbnails with our AI-powered generator</p>
+                    
+                    <div class="generator-setup">
+                        <div class="input-group">
+                            <input type="text" id="thumbnailVideoId" placeholder="Enter Video ID or URL">
+                            <button id="detectCurrentVideoForThumbnail" class="btn-secondary">Auto-Detect</button>
+                        </div>
+                        
+                        <div class="template-selector">
+                            <label for="thumbnailTemplate">Choose Template:</label>
+                            <select id="thumbnailTemplate">
+                                <option value="default">Clean & Modern</option>
+                                <option value="gaming">Gaming</option>
+                                <option value="tutorial">Tutorial</option>
+                                <option value="vlog">Vlog</option>
+                                <option value="news">News & Commentary</option>
+                            </select>
+                        </div>
+                        
+                        <div class="thumbnail-options">
+                            <div class="option-item">
+                                <label for="thumbnailText">Custom Text:</label>
+                                <input type="text" id="thumbnailText" placeholder="Enter text for thumbnail">
+                            </div>
+                            
+                            <div class="option-item checkbox-option">
+                                <input type="checkbox" id="useVideoFrame" checked>
+                                <label for="useVideoFrame">Use video frame as background</label>
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button id="generateThumbnail" class="btn-primary">Generate Thumbnail</button>
+                            <button id="analyzeVideoForThumbnail" class="btn-secondary">Analyze Video Content</button>
+                        </div>
+                    </div>
+                    
+                    <div id="thumbnailGeneratorContainer" class="generator-container"></div>
+                    <div id="thumbnailAnalysisResults" class="analysis-results"></div>
+                </div>
+            </div>
+            
+            <div class="tab-pane" id="abtesting-tab">
+                <div class="tab-header">
+                    <h2>A/B Testing</h2>
+                    <p>Test different titles and thumbnails to see which performs better</p>
+                </div>
+                
+                <div class="test-setup">
+                    <div class="input-group">
+                        <input type="text" id="abTestVideoId" placeholder="Enter Video ID or URL">
+                        <button id="detectCurrentVideoForTest" class="btn-secondary">Auto-Detect</button>
+                    </div>
+                    
+                    <div class="test-type-selector">
+                        <div class="radio-option">
+                            <input type="radio" id="titleTest" name="testType" value="title" checked>
+                            <label for="titleTest">Title Test</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="thumbnailTest" name="testType" value="thumbnail">
+                            <label for="thumbnailTest">Thumbnail Test</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Title Test Options -->
+                    <div id="titleTestOptions" class="test-options">
+                        <div class="variant-input">
+                            <label for="titleA">Title Variant A:</label>
+                            <textarea id="titleA" placeholder="Enter first title variant"></textarea>
+                            <div class="title-metrics">
+                                <span class="metric">Character Count: <span id="titleALength">0</span></span>
+                                <span class="metric">Word Count: <span id="titleAWords">0</span></span>
+                            </div>
+                        </div>
+                        <div class="variant-input">
+                            <label for="titleB">Title Variant B:</label>
+                            <textarea id="titleB" placeholder="Enter second title variant"></textarea>
+                            <div class="title-metrics">
+                                <span class="metric">Character Count: <span id="titleBLength">0</span></span>
+                                <span class="metric">Word Count: <span id="titleBWords">0</span></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Thumbnail Test Options -->
+                    <div id="thumbnailTestOptions" class="test-options" style="display: none;">
+                        <div class="variant-input">
+                            <label for="thumbnailA">Thumbnail Variant A:</label>
+                            <input type="file" id="thumbnailA" accept="image/*">
+                            <div id="thumbnailAPreview" class="thumbnail-preview-container"></div>
+                        </div>
+                        <div class="variant-input">
+                            <label for="thumbnailB">Thumbnail Variant B:</label>
+                            <input type="file" id="thumbnailB" accept="image/*">
+                            <div id="thumbnailBPreview" class="thumbnail-preview-container"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-settings">
+                        <div class="setting-item">
+                            <label for="testDuration">Test Duration (days):</label>
+                            <select id="testDuration">
+                                <option value="3">3 days</option>
+                                <option value="7" selected>7 days</option>
+                                <option value="14">14 days</option>
+                                <option value="30">30 days</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label for="testGoal">Success Metric:</label>
+                            <select id="testGoal">
+                                <option value="ctr">Click-Through Rate (CTR)</option>
+                                <option value="views">View Count</option>
+                                <option value="watchtime">Watch Time</option>
+                                <option value="engagement">Engagement Rate</option>
+                            </select>
+                        </div>
+                        <div class="setting-item checkbox-option">
+                            <input type="checkbox" id="autoApplyWinner" checked>
+                            <label for="autoApplyWinner">Automatically apply winning variant</label>
+                        </div>
+                    </div>
+                    
+                    <button id="startTest" class="btn-primary">Start A/B Test</button>
+                </div>
+                
+                <div class="test-results">
+                    <div class="active-tests">
+                        <h3>Active Tests</h3>
+                        <div id="activeTests" class="tests-container">
+                            <div class="test-card">
+                                <div class="test-header">
+                                    <span class="test-type">Title Test</span>
+                                    <span class="test-status">Running</span>
+                                </div>
+                                <div class="test-content">
+                                    <div class="variant">
+                                        <h4>Variant A</h4>
+                                        <p class="variant-text">Your first title variant</p>
+                                        <div class="variant-stats">
+                                            <span class="stat">CTR: 5.2%</span>
+                                            <span class="stat">Views: 1,234</span>
+                                        </div>
+                                    </div>
+                                    <div class="variant">
+                                        <h4>Variant B</h4>
+                                        <p class="variant-text">Your second title variant</p>
+                                        <div class="variant-stats">
+                                            <span class="stat">CTR: 4.8%</span>
+                                            <span class="stat">Views: 1,156</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="test-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 50%"></div>
+                                    </div>
+                                    <span class="progress-text">3 days remaining</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-history">
+                        <h3>Test History</h3>
+                        <div id="testHistory" class="tests-container">
+                            <div class="test-card completed">
+                                <div class="test-header">
+                                    <span class="test-type">Thumbnail Test</span>
+                                    <span class="test-status">Completed</span>
+                                </div>
+                                <div class="test-content">
+                                    <div class="variant winner">
+                                        <h4>Winning Variant</h4>
+                                        <div class="thumbnail-preview"></div>
+                                        <div class="variant-stats">
+                                            <span class="stat">CTR: 6.5%</span>
+                                            <span class="stat">Views: 2,345</span>
+                                        </div>
+                                    </div>
+                                    <div class="test-summary">
+                                        <p>Test ran for 7 days with 5,000 impressions</p>
+                                        <p>Variant A performed 30% better than Variant B</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Social Media Tab -->
+            <div class="tab-pane" id="social-tab">
+                <div class="social-media-section">
+                    <h2>Social Media Integration</h2>
+                    <p>Connect your social media accounts to auto-share your YouTube videos</p>
+                    
+                    <!-- Social Media Platform Tabs -->
+                    <div class="social-platform-tabs">
+                        <div class="social-tab-navigation">
+                            <button class="social-tab-btn active" data-platform="overview">Overview</button>
+                            <button class="social-tab-btn" data-platform="facebook">Facebook</button>
+                            <button class="social-tab-btn" data-platform="twitter">Twitter</button>
+                            <button class="social-tab-btn" data-platform="instagram">Instagram</button>
+                            <button class="social-tab-btn" data-platform="linkedin">LinkedIn</button>
+                            <button class="social-tab-btn" data-platform="telegram">Telegram</button>
+                            <button class="social-tab-btn" data-platform="whatsapp">WhatsApp</button>
+                        </div>
+                        
+                        <!-- Overview Tab -->
+                        <div class="social-tab-content active" id="overview-tab-content">
+                            <div class="social-sharing-section">
+                                <h3>Quick Share</h3>
+                                <p>Share your YouTube video directly to social media platforms</p>
+                                
+                                <div class="video-input-group">
+                                    <input type="text" id="shareVideoId" placeholder="Enter Video ID or URL">
+                                    <button id="detectCurrentVideoForShare" class="btn-secondary">Auto-Detect</button>
+                                </div>
+                                
+                                <div class="direct-share-buttons">
+                                    <button id="shareFacebook" class="direct-share-btn facebook">Share to Facebook</button>
+                                    <button id="shareTwitter" class="direct-share-btn twitter">Share to Twitter/X</button>
+                                    <button id="shareLinkedin" class="direct-share-btn linkedin">Share to LinkedIn</button>
+                                    <button id="shareWhatsapp" class="direct-share-btn whatsapp">Share to WhatsApp</button>
+                                    <button id="shareTelegram" class="direct-share-btn telegram">Share to Telegram</button>
+                                </div>
+                            </div>
+                            
+                            <div class="platform-connect">
+                                <h3>Connect Platforms</h3>
+                                <p>For advanced features, connect your social media accounts</p>
+                                <div class="social-buttons">
+                                    <button id="connectFacebook" class="social-connect-btn">Connect Facebook</button>
+                                    <button id="connectTwitter" class="social-connect-btn">Connect Twitter</button>
+                                    <button id="connectInstagram" class="social-connect-btn">Connect Instagram</button>
+                                    <button id="connectLinkedin" class="social-connect-btn">Connect LinkedIn</button>
+                                    <button id="connectTelegram" class="social-connect-btn">Connect Telegram</button>
+                                    <button id="connectWhatsapp" class="social-connect-btn">Connect WhatsApp</button>
+                                </div>
+                            </div>
+                            
+                            <div class="auto-post-settings">
+                                <h3>Global Auto-Post Settings</h3>
+                                <div class="settings-form">
+                                    <div class="setting-item">
+                                        <label for="postTitle">Post Title Format:</label>
+                                        <input type="text" id="postTitle" placeholder="New video: {{title}} - Watch now!" value="New video: {{title}} - Watch now!">
+                                    </div>
+                                    <div class="setting-item">
+                                        <label for="postDescription">Post Description Format:</label>
+                                        <textarea id="postDescription" placeholder="I just uploaded a new video: {{title}}. {{description}} #{{tags}}">I just uploaded a new video: {{title}}. Check it out and let me know what you think! #{{tags}}</textarea>
+                                    </div>
+                                    <div class="setting-item checkbox-option">
+                                        <input type="checkbox" id="autoPostOnUpload" checked>
+                                        <label for="autoPostOnUpload">Automatically post when video is uploaded</label>
+                                    </div>
+                                    <div class="setting-item checkbox-option">
+                                        <input type="checkbox" id="includeThumbailInPost" checked>
+                                        <label for="includeThumbailInPost">Include video thumbnail in posts</label>
+                                    </div>
+                                    <button id="savePostSettings">Save Settings</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Add Social Media Dashboard Element -->
+                            <div id="socialMediaDashboard" class="social-media-dashboard">
+                                <h3>Social Media Dashboard</h3>
+                                <p>Overview of social media metrics and activities.</p>
+                                <!-- Metrics will be dynamically populated here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Platform-specific tabs content -->
+                        <div class="social-tab-content" id="facebook-tab-content">
+                            <div class="platform-header">
+                                <i class="fab fa-facebook platform-icon"></i>
+                                <h3>Facebook Integration</h3>
+                            </div>
+                            
+                            <div class="platform-connection-status">
+                                <div class="connection-info" id="facebook-connection-info">
+                                    <p class="status-label">Status: <span class="status-value" id="facebook-status">Disconnected</span></p>
+                                    <p class="account-label">Account: <span class="account-value" id="facebook-account">None</span></p>
+                                </div>
+                                <div class="connection-actions">
+                                    <button id="facebook-connect-btn" class="platform-action-btn connect-btn"><i class="fas fa-plug"></i> Connect Account</button>
+                                    <button id="facebook-disconnect-btn" class="platform-action-btn disconnect-btn" style="display:none"><i class="fas fa-unlink"></i> Disconnect</button>
+                                </div>
+                            </div>
+                            
+                            <div class="platform-settings" id="facebook-settings" style="display:none">
+                                <h4>Facebook Post Settings</h4>
+                                <div class="setting-item">
+                                    <label for="facebookCustomMessage">Custom Message Format:</label>
+                                    <textarea id="facebookCustomMessage" placeholder="Check out my new YouTube video: {{title}}">Check out my new YouTube video: {{title}} {{url}}</textarea>
+                                </div>
+                                <div class="setting-item checkbox-option">
+                                    <input type="checkbox" id="facebookAutoPost" checked>
+                                    <label for="facebookAutoPost">Auto-post to Facebook when video is uploaded</label>
+                                </div>
+                                <div class="setting-item checkbox-option">
+                                    <input type="checkbox" id="facebookIncludeThumbnail" checked>
+                                    <label for="facebookIncludeThumbnail">Include video thumbnail</label>
+                                </div>
+                                <button id="saveFacebookSettings" class="save-platform-settings">Save Facebook Settings</button>
+                            </div>
+                            
+                            <div class="platform-analytics" id="facebook-analytics" style="display:none">
+                                <h4>Facebook Analytics</h4>
+                                <div class="analytics-metrics">
+                                    <div class="metric-card">
+                                        <div class="metric-value" id="facebook-posts-count">0</div>
+                                        <div class="metric-label">Posts</div>
+                                    </div>
+                                    <div class="metric-card">
+                                        <div class="metric-value" id="facebook-engagement">0</div>
+                                        <div class="metric-label">Engagement</div>
+                                    </div>
+                                    <div class="metric-card">
+                                        <div class="metric-value" id="facebook-clicks">0</div>
+                                        <div class="metric-label">Clicks</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Similar structure for other platform tabs -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-pane" id="tools-tab">
+                <div class="tools-header">
+                    <h2>Utility Tools</h2>
+                    <p>Access various tools to help manage your YouTube channel</p>
+                </div>
+                
+                <!-- Data Management Tools -->
+                <div class="tools-section">
+                    <h3>Data Management</h3>
+                    <div class="tools-grid">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-file-export"></i>
+                            </div>
+                            <h4>Export Data</h4>
+                            <p>Export your channel data, analytics, and settings</p>
+                            <div class="export-options">
+                                <select id="exportType">
+                                    <option value="analytics">Analytics Data</option>
+                                    <option value="keywords">Keyword Research</option>
+                                    <option value="content">Content Calendar</option>
+                                    <option value="settings">Settings</option>
+                                    <option value="all">All Data</option>
+                                </select>
+                                <button id="exportData" class="btn-primary">Export</button>
+                            </div>
+                        </div>
+                        
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-file-import"></i>
+                            </div>
+                            <h4>Import Data</h4>
+                            <p>Import data from other sources or previous exports</p>
+                            <div class="import-options">
+                                <input type="file" id="importFile" accept=".json,.csv">
+                                <button id="importData" class="btn-primary">Import</button>
+                            </div>
+                        </div>
+                        
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-sync"></i>
+                            </div>
+                            <h4>Sync Data</h4>
+                            <p>Sync your data across devices and browsers</p>
+                            <div class="sync-options">
+                                <button id="syncNow" class="btn-primary">Sync Now</button>
+                                <div class="sync-status">
+                                    <span>Last synced: <span id="lastSyncTime">Never</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Content Tools -->
+                <div class="tools-section">
+                    <h3>Content Tools</h3>
+                    <div class="tools-grid">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <h4>Upload Scheduler</h4>
+                            <p>Schedule your video uploads in advance</p>
+                            <div class="scheduler-options">
+                                <input type="datetime-local" id="uploadDateTime">
+                                <button id="scheduleUpload" class="btn-primary">Schedule</button>
+                            </div>
+                            <div id="scheduledUploads" class="scheduled-list"></div>
+                        </div>
+                        
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-tags"></i>
+                            </div>
+                            <h4>Tag Generator</h4>
+                            <p>Generate optimized tags for your videos</p>
+                            <div class="tag-generator">
+                                <input type="text" id="tagKeywords" placeholder="Enter main topics">
+                                <button id="generateTags" class="btn-primary">Generate Tags</button>
+                                <div id="generatedTags" class="tag-list"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <h4>Trend Analyzer</h4>
+                            <p>Analyze trending topics and keywords</p>
+                            <div class="trend-analyzer">
+                                <select id="trendCategory">
+                                    <option value="">All Categories</option>
+                                    <option value="1">Film & Animation</option>
+                                    <option value="2">Autos & Vehicles</option>
+                                    <option value="10">Music</option>
+                                    <option value="15">Pets & Animals</option>
+                                    <option value="17">Sports</option>
+                                    <option value="20">Gaming</option>
+                                    <option value="22">People & Blogs</option>
+                                    <option value="23">Comedy</option>
+                                    <option value="24">Entertainment</option>
+                                    <option value="25">News & Politics</option>
+                                    <option value="26">Howto & Style</option>
+                                    <option value="27">Education</option>
+                                    <option value="28">Science & Technology</option>
+                                </select>
+                                <button id="analyzeTrends" class="btn-primary">Analyze</button>
+                                <div id="trendResults" class="trend-list"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Channel Management Tools -->
+                <div class="tools-section">
+                    <h3>Channel Management</h3>
+                    <div class="tools-grid">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h4>Audience Insights</h4>
+                            <p>Get detailed insights about your audience</p>
+                            <div class="insights-options">
+                                <select id="insightType">
+                                    <option value="demographics">Demographics</option>
+                                    <option value="interests">Interests</option>
+                                    <option value="behavior">Viewing Behavior</option>
+                                </select>
+                                <button id="getInsights" class="btn-primary">Get Insights</button>
+                            </div>
+                            <div id="insightResults" class="insights-container"></div>
+                        </div>
+                        
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <h4>Comment Manager</h4>
+                            <p>Manage and respond to comments efficiently</p>
+                            <div class="comment-manager">
+                                <select id="commentFilter">
+                                    <option value="all">All Comments</option>
+                                    <option value="unread">Unread</option>
+                                    <option value="replied">Replied</option>
+                                    <option value="flagged">Flagged</option>
+                                </select>
+                                <div id="commentList" class="comment-list"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <h4>Notification Manager</h4>
+                            <p>Configure and manage your channel notifications</p>
+                            <div class="notification-settings">
+                                <div class="setting-item">
+                                    <label for="emailNotifications">Email Notifications:</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="emailNotifications" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="setting-item">
+                                    <label for="pushNotifications">Push Notifications:</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="pushNotifications" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="setting-item">
+                                    <label for="notificationFrequency">Notification Frequency:</label>
+                                    <select id="notificationFrequency">
+                                        <option value="instant">Instant</option>
+                                        <option value="daily">Daily Digest</option>
+                                        <option value="weekly">Weekly Summary</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- API Management Tab -->
+            <div class="tab-pane" id="api-tab">
+                <div class="api-integrations-container">
+                    <!-- YouTube Data API Section -->
+                    <div class="api-section">
+                        <h2>YouTube Data API</h2>
+                        <div class="api-info-box">
+                            <p>Required for accessing YouTube video data, analytics, and channel information.</p>
+                        </div>
+                        <div class="api-configuration">
+                            <input type="text" id="apiKeyInput" placeholder="Enter YouTube API Key">
+                            <div class="api-actions">
+                                <button id="saveApiKey" class="btn-primary">Save</button>
+                                <button id="testApiKey" class="btn-secondary">Test Connection</button>
+                            </div>
+                            <div class="api-status" id="youtubeApiStatus">
+                                <span class="status-indicator"></span>
+                                <span class="status-text">Not Configured</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OpenAI API Section -->
+                    <div class="api-section">
+                        <h2>OpenAI API</h2>
+                        <div class="api-info-box">
+                            <p>Required for AI-powered content suggestions and optimizations.</p>
+                        </div>
+                        <div class="api-configuration">
+                            <input type="text" id="openaiApiKey" placeholder="Enter OpenAI API Key">
+                            <div class="api-actions">
+                                <button id="saveOpenaiApiKey" class="btn-primary">Save</button>
+                                <button id="testOpenaiApiKey" class="btn-secondary">Test Connection</button>
+                            </div>
+                            <div class="api-status" id="openaiApiStatus">
+                                <span class="status-indicator"></span>
+                                <span class="status-text">Not Configured</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional API Sections for Missing Elements -->
+                    <div class="api-section">
+                        <h2>Keyword API</h2>
+                        <div class="api-info-box">
+                            <p>For keyword research and analysis.</p>
+                        </div>
+                        <div class="api-configuration">
+                            <input type="text" id="keywordApiKey" placeholder="Enter Keyword API Key">
+                            <div class="api-actions">
+                                <button id="saveKeywordApiKey" class="btn-primary">Save</button>
+                                <button id="testKeywordApiKey" class="btn-secondary">Test Connection</button>
+                            </div>
+                            <div class="api-status" id="keywordApiStatus">
+                                <span class="status-indicator"></span>
+                                <span class="status-text">Not Configured</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h2>Facebook API</h2>
+                        <div class="api-info-box">
+                            <p>For social media integration with Facebook.</p>
+                        </div>
+                        <div class="api-configuration">
+                            <input type="text" id="facebookApiKey" placeholder="Enter Facebook API Key">
+                            <div class="api-actions">
+                                <button id="saveFacebookApi" class="btn-primary">Save</button>
+                            </div>
+                            <div class="api-status" id="facebookApiStatus">
+                                <span class="status-indicator"></span>
+                                <span class="status-text">Not Configured</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h2>Twitter API</h2>
+                        <div class="api-info-box">
+                            <p>For social media integration with Twitter.</p>
+                        </div>
+                        <div class="api-configuration">
+                            <input type="text" id="twitterApiKey" placeholder="Enter Twitter API Key">
+                            <div class="api-actions">
+                                <button id="saveTwitterApi" class="btn-primary">Save</button>
+                            </div>
+                            <div class="api-status" id="twitterApiStatus">
+                                <span class="status-indicator"></span>
+                                <span class="status-text">Not Configured</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h2>Google Analytics</h2>
+                        <div class="api-info-box">
+                            <p>For advanced analytics tracking.</p>
+                        </div>
+                        <div class="api-configuration">
+                            <input type="text" id="googleAnalyticsKey" placeholder="Enter Google Analytics Key">
+                            <div class="api-actions">
+                                <button id="saveGoogleAnalytics" class="btn-primary">Save</button>
+                            </div>
+                            <div class="api-status" id="googleAnalyticsStatus">
+                                <span class="status-indicator"></span>
+                                <span class="status-text">Not Configured</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- API Keys List -->
+                    <div class="api-section">
+                        <h2>API Keys List</h2>
+                        <div id="apiKeysList" class="api-keys-list">
+                            <!-- API keys will be dynamically populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-pane" id="settings-tab">
+                <div class="settings-section">
+                    <h2>Settings</h2>
+                    
+                    <!-- General Settings -->
+                    <div class="settings-category">
+                        <h3>General</h3>
+                        <div class="setting-item">
+                            <label for="themeSelect">Theme:</label>
+                            <select id="themeSelect" class="styled-dropdown">
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                                <option value="system">System Default</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label for="languageSelect">Language:</label>
+                            <select id="languageSelect" class="styled-dropdown">
+                                <option value="en">English</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                                <option value="de">German</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label for="autoStart">Auto-Start Extension on YouTube:</label>
+                            <label class="switch">
+                                <input type="checkbox" id="autoStart" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Content Settings -->
+                    <div class="settings-category">
+                        <h3>Content</h3>
+                        <div class="setting-item">
+                            <label for="titleTemplate">Default Video Title:</label>
+                            <input type="text" id="titleTemplate" placeholder="Enter default title template">
+                        </div>
+                        <div class="setting-item">
+                            <label for="descriptionTemplate">Default Video Description:</label>
+                            <textarea id="descriptionTemplate" placeholder="Enter default description template"></textarea>
+                        </div>
+                        <div class="setting-item">
+                            <label for="defaultCategory">Default Category:</label>
+                            <select id="defaultCategory" class="styled-dropdown">
+                                <option value="">Select a category</option>
+                                <option value="1">Film & Animation</option>
+                                <option value="2">Autos & Vehicles</option>
+                                <option value="10">Music</option>
+                                <option value="15">Pets & Animals</option>
+                                <option value="17">Sports</option>
+                                <option value="20">Gaming</option>
+                                <option value="22">People & Blogs</option>
+                                <option value="23">Comedy</option>
+                                <option value="24">Entertainment</option>
+                                <option value="25">News & Politics</option>
+                                <option value="26">Howto & Style</option>
+                                <option value="27">Education</option>
+                                <option value="28">Science & Technology</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label for="autoDetect">Auto-detect current video:</label>
+                            <label class="switch">
+                                <input type="checkbox" id="autoDetect" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Analytics Settings -->
+                    <div class="settings-category">
+                        <h3>Analytics</h3>
+                        <div class="setting-item">
+                            <label for="dataDepth">Data Depth:</label>
+                            <select id="dataDepth" class="styled-dropdown">
+                                <option value="basic">Basic</option>
+                                <option value="standard">Standard</option>
+                                <option value="advanced">Advanced</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label for="autoUpdate">Auto-Update Analytics:</label>
+                            <label class="switch">
+                                <input type="checkbox" id="autoUpdate">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label for="retentionInterval">Retention Data Interval (hours):</label>
+                            <input type="number" id="retentionInterval" value="24" min="1" max="168">
+                        </div>
+                    </div>
+
+                    <!-- Privacy & Data -->
+                    <div class="settings-category">
+                        <h3>Privacy & Data</h3>
+                        <div class="setting-item">
+                            <label for="dataRetention">Data Retention Period:</label>
+                            <select id="dataRetention" class="styled-dropdown">
+                                <option value="30">30 Days</option>
+                                <option value="90">90 Days</option>
+                                <option value="180">180 Days</option>
+                                <option value="365">1 Year</option>
+                                <option value="0">Indefinite</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label for="anonymizeData">Anonymize Personal Data:</label>
+                            <label class="switch">
+                                <input type="checkbox" id="anonymizeData" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label for="clearCache">Clear Cached Data:</label>
+                            <button id="clearCache" class="btn-secondary">Clear Now</button>
+                        </div>
+                        <div class="setting-item">
+                            <label for="exportData">Export All Data:</label>
+                            <button id="exportData" class="btn-secondary">Export</button>
+                        </div>
+                    </div>
+
+                    <!-- Display Settings -->
+                    <div class="settings-category">
+                        <h3>Display</h3>
+                        <div class="setting-item">
+                            <label for="displayQuickActions">Show Quick Actions:</label>
+                            <label class="switch">
+                                <input type="checkbox" id="displayQuickActions" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label for="displayActivityLog">Show Activity Log:</label>
+                            <label class="switch">
+                                <input type="checkbox" id="displayActivityLog" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label for="resetLayout">Reset Layout to Default:</label>
+                            <button id="resetLayout" class="btn-secondary">Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- Notifications -->
+                    <div class="settings-category">
+                        <h3>Notifications</h3>
+                        <div class="setting-item">
+                            <label for="enableNotifications">Enable Notifications:</label>
+                            <label class="switch">
+                                <input type="checkbox" id="enableNotifications" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label for="notificationSound">Enable Sound:</label>
+                            <label class="switch">
+                                <input type="checkbox" id="notificationSound" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label for="notificationDuration">Display Duration (seconds):</label>
+                            <input type="number" id="notificationDuration" value="5" min="1" max="30">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading" class="loading" style="display: none;">
+        <div class="spinner"></div>
+        <span>Loading...</span>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Settings</h2>
+            </div>
+            <div class="modal-body">
+                <div class="settings-container">
+                    <!-- Settings will be loaded here -->
+                    <p>Settings content will appear here.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveSettingsBtn" class="btn-primary">Save Changes</button>
+                <button id="cancelSettingsBtn" class="btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load social-tabs.js as a module -->
+    <script src="js/load-social-tabs.js" type="module"></script>
+</body>
+</html>
